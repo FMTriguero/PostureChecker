@@ -12,11 +12,8 @@ class Classifier:
 
         self.image = None
 
-    def testing(self, image_path):
+    def predict(self, image_path):
         self.image = Image.open(image_path)
-        self.predict()
-
-    def predict(self):
         data = self.prepare_image()
 
         # run the inference
