@@ -3,26 +3,30 @@
 # Posture Checker Program
 
 # TODO:
-# 1. Import the model's code
-# 2. Test that the model works with single image.
 # 3. Test that the model works with live stream images.
 # 4. Make custom start and stop for program.
 # 5. Build trigger to take 100 photos over a period of 10 mins calculat % good posture
 
 from Classifier.Classifier import Classifier
+from Camera.Camera import *
 import os
 
 # 1. Import the model's code
 
 
 class PostureChecker:
-    def __init__(self, classifier=None):
+    def __init__(self, classifier=None, camera=None):
         self.classifier = classifier
+        self.camera = camera
+
         self.prediction = None
 
-    def test_image(self):
-        path_to_picture = os.path.join("Testing", "Thumb down.jpg")
-        self.prediction = self.classifier.predict(image_path=path_to_picture)
+    def analyze_screenshot(self):
+        self.camera.take_screenshot()
+        self.camera.save_working_screenshot()
+        self.prediction = self.classifier.predict(image_path=os.path.join("working_image.jpg"))
+        self.analyze_results()
+        self.camera.delete_working_screenshot()
 
     def analyze_results(self):
         if self.prediction[0][0] > self.prediction[0][1]:
@@ -33,11 +37,17 @@ class PostureChecker:
         self.test_image()
         self.analyze_results()
 
+    def test_image(self):
+        path_to_picture = os.path.join("Testing", "Thumb down.jpg")
+        self.prediction = self.classifier.predict(image_path=path_to_picture)
+
 
 def main():
     classifier = Classifier()
-    postureChecker = PostureChecker(classifier=classifier)
-    postureChecker.testing()
+    camera = Camera()
+    postureChecker = PostureChecker(classifier=classifier, camera=camera)
+    # postureChecker.testing()
+    postureChecker.analyze_screenshot()
 
 
 if __name__ == "__main__":

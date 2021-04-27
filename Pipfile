@@ -9,6 +9,7 @@ verify_ssl = true
 tensorflow = "*"
 pytest = "*"
 pillow = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.8"

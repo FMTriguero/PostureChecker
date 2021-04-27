@@ -13,8 +13,12 @@ class Classifier:
 
         self.image = None
 
-    def predict(self, image_path):
-        self.image = Image.open(image_path)
+    def predict(self, image_path=None, image=None):
+        if image_path is not None:
+            self.image = Image.open(image_path)
+        else:
+            self.image = image
+
         data = self.prepare_image()
 
         # run the inference
