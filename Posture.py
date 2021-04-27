@@ -1,7 +1,3 @@
-#! /Users/carterash/.local/share/virtualenvs/PostureChecker-3vBRJ410/bin/python3
-
-# Posture Checker Program
-
 # TODO:
 # 3. Test that the model works with live stream images.
 # 4. Make custom start and stop for program.
@@ -10,8 +6,7 @@
 from Classifier.Classifier import Classifier
 from Camera.Camera import *
 import os
-
-# 1. Import the model's code
+import time
 
 
 class PostureChecker:
@@ -20,6 +15,12 @@ class PostureChecker:
         self.camera = camera
 
         self.prediction = None
+
+    def loop(self):
+        running = True
+        while running:
+            time.sleep(1)
+            self.analyze_screenshot()
 
     def analyze_screenshot(self):
         self.camera.take_screenshot()
@@ -47,7 +48,7 @@ def main():
     camera = Camera()
     postureChecker = PostureChecker(classifier=classifier, camera=camera)
     # postureChecker.testing()
-    postureChecker.analyze_screenshot()
+    postureChecker.loop()
 
 
 if __name__ == "__main__":
