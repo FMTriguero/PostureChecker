@@ -1,7 +1,8 @@
 # TODO:
-# 3. Test that the model works with live stream images.
 # 4. Make custom start and stop for program.
 # 5. Build trigger to take 100 photos over a period of 10 mins calculat % good posture
+# !!!Modifying 5. to "Build trigger that sends alert (shutdown for now) when x bad posture has been recorded
+# 6. Add a config file to have modify things like "bad posture before alert", camera index...
 
 from Classifier.Classifier import Classifier
 from Camera.Camera import *
@@ -15,12 +16,16 @@ class PostureChecker:
         self.camera = camera
 
         self.prediction = None
+        self.running_counter_bad = 0
 
     def loop(self):
         running = True
         while running:
             time.sleep(1)
             self.analyze_screenshot()
+            if self.running_counter_bad == 10:
+                running = False
+                print("Closing program")
 
     def analyze_screenshot(self):
         self.camera.take_screenshot()
@@ -31,7 +36,9 @@ class PostureChecker:
 
     def analyze_results(self):
         if self.prediction[0][0] > self.prediction[0][1]:
+            self.running_counter_bad = 0
             return print("Thumbs up!")
+        self.running_counter_bad += 1
         return print("Thumbs down!")
 
     def testing(self):
