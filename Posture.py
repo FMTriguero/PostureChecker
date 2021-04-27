@@ -19,9 +19,9 @@ class PostureChecker:
         self.classifier = classifier
         self.prediction = None
 
-    def check_image(self):
+    def test_image(self):
         path_to_picture = "/Users/carterash/PostureChecker/.gitignore/Test_img.jpg"
-        self.prediction = self.classifier.predict(image_path=path_to_picture)
+        self.prediction = self.classifier.testing(image_path=path_to_picture)
 
     def analyze_results(self):
         if self.prediction[0][0] > self.prediction[0][1]:
@@ -29,7 +29,7 @@ class PostureChecker:
         return print("Thumbs down!")
 
     def testing(self):
-        self.check_image()
+        self.test_image()
         self.analyze_results()
 
 
