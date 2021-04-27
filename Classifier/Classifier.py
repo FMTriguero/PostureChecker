@@ -5,7 +5,7 @@ import numpy as np
 
 class Classifier:
     def __init__(self):
-        path = '/Users/carterash/PostureChecker/.gitignore/keras_model.h5'  # TODO program loads model without path
+        path = "D:\FMTriguero\PostureChecker\Classifier\keras_model.h5"  # TODO program loads model without path
         self.path = path
         self.model = tensorflow.keras.models.load_model(self.path)
         np.set_printoptions(suppress=True)
@@ -29,7 +29,7 @@ class Classifier:
         # resize the image to a 224x224 with the same strategy as in TM2:
         # resizing the image to be at least 224x224 and then cropping from the center
         size = (224, 224)
-        self.image = ImageOps.fit(image, size, Image.ANTIALIAS)
+        self.image = ImageOps.fit(self.image, size, Image.ANTIALIAS)
 
         # turn the image into a numpy array
         image_array = np.asarray(self.image)

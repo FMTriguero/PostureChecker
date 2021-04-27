@@ -20,7 +20,7 @@ class PostureChecker:
         self.prediction = None
 
     def test_image(self):
-        path_to_picture = "/Users/carterash/PostureChecker/.gitignore/Test_img.jpg"
+        path_to_picture = "D:\FMTriguero\PostureChecker\Testing\Thumb up.jpg"
         self.prediction = self.classifier.predict(image_path=path_to_picture)
 
     def analyze_results(self):
