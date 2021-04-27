@@ -10,6 +10,7 @@
 # 5. Build trigger to take 100 photos over a period of 10 mins calculat % good posture
 
 from Classifier.Classifier import Classifier
+import os
 
 # 1. Import the model's code
 
@@ -20,7 +21,7 @@ class PostureChecker:
         self.prediction = None
 
     def test_image(self):
-        path_to_picture = "D:\FMTriguero\PostureChecker\Testing\Thumb up.jpg"
+        path_to_picture = os.path.join("Testing", "Thumb down.jpg")
         self.prediction = self.classifier.predict(image_path=path_to_picture)
 
     def analyze_results(self):

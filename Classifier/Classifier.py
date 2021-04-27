@@ -1,11 +1,12 @@
 import tensorflow.keras
+import os
 from PIL import Image, ImageOps
 import numpy as np
 
 
 class Classifier:
     def __init__(self):
-        path = "D:\FMTriguero\PostureChecker\Classifier\keras_model.h5"  # TODO program loads model without path
+        path = os.path.join("Classifier", "keras_model.h5")
         self.path = path
         self.model = tensorflow.keras.models.load_model(self.path)
         np.set_printoptions(suppress=True)
