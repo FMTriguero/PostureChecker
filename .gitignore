@@ -1,4 +1,2 @@
 testing/
-/Classifier/keras_model.h5
-/Classifier/labels.txt
 /Classifier/KeypointsFinder/model.h5

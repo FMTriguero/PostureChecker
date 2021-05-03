@@ -35,19 +35,15 @@ class PostureChecker:
         self.camera.delete_working_screenshot()
 
     def analyze_results(self):
-        if self.prediction[0][0] > self.prediction[0][1]:
-            self.running_counter_bad = 0
-            return print("Thumbs up!")
-        self.running_counter_bad += 1
-        return print("Thumbs down!")
+        return "TODO"
 
     def testing(self):
         self.test_image()
         self.analyze_results()
 
     def test_image(self):
-        path_to_picture = os.path.join("Testing", "Thumb down.jpg")
-        self.prediction = self.classifier.predict(image_path=path_to_picture)
+        path_to_picture = os.path.join("Testing", "TODO")
+        return "TODO"
 
 
 def main():
