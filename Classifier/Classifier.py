@@ -1,9 +1,6 @@
-import tensorflow.keras
-import os
-from PIL import Image, ImageOps
-import numpy as np
+import cv2
 
-from KeypointsFinder.Keypoints_Finder import KeypointsFinder
+from Classifier.KeypointsFinder.Keypoints_Finder import KeypointsFinder
 
 
 class Classifier:
@@ -12,10 +9,10 @@ class Classifier:
 
         self.image = None
 
-    def predict(self, image_path=None, image=None):  # To work with image path or image object (careful type)
-        if image_path is not None:
-            self.image = Image.open(image_path)
+    def predict(self, image_path=None, image=None):
+        if image_path is not None:              # To work with image path or image object (must be cv2 image)
+            self.image = cv2.imread(image_path)
         else:
             self.image = image
 
-        return "TODO"
+        self.keypoints_finder.find_keypoints(self.image)

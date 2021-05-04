@@ -35,23 +35,22 @@ class PostureChecker:
         self.camera.delete_working_screenshot()
 
     def analyze_results(self):
-        return "TODO"
+        print("Work in progress, need second model")
 
     def testing(self):
         self.test_image()
-        self.analyze_results()
+        self.classifier.keypoints_finder.test_show_image()
 
     def test_image(self):
-        path_to_picture = os.path.join("Testing", "TODO")
-        return "TODO"
+        self.classifier.predict(image_path=os.path.join("Testing", "good_posture.jpg"))
 
 
 def main():
     classifier = Classifier()
     camera = Camera()
     postureChecker = PostureChecker(classifier=classifier, camera=camera)
-    # postureChecker.testing()
-    postureChecker.loop()
+    postureChecker.testing()
+    # postureChecker.loop()
 
 
 if __name__ == "__main__":

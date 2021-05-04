@@ -10,7 +10,8 @@ tensorflow = "*"
 pytest = "*"
 pillow = "*"
 opencv-python = "*"
-configobj = 5.0.6
+configobj = "*"
+scipy = "*"
 
 
 [requires]
