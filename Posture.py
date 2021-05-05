@@ -22,17 +22,17 @@ class PostureChecker:
         running = True
         while running:
             time.sleep(1)
-            self.analyze_screenshot()
-            if self.running_counter_bad == 10:
-                running = False
-                print("Closing program")
+            self.take_image()
+            self.analyze_image()
+            print("Work in progress, need analyze_results")
 
-    def analyze_screenshot(self):
+    def take_image(self):
         self.camera.take_screenshot()
         self.camera.save_working_screenshot()
+
+    def analyze_image(self):
         self.prediction = self.classifier.predict(image_path=os.path.join("working_image.jpg"))
         self.analyze_results()
-        self.camera.delete_working_screenshot()
 
     def analyze_results(self):
         print("Work in progress, need second model")
@@ -44,11 +44,17 @@ class PostureChecker:
     def test_image(self):
         self.classifier.predict(image_path=os.path.join("Testing", "good_posture.jpg"))
 
+    def cleanup(self):
+        """Check for when app is not closed properly"""
+        self.camera.delete_working_screenshot()
+
 
 def main():
     classifier = Classifier()
     camera = Camera()
     postureChecker = PostureChecker(classifier=classifier, camera=camera)
+
+    postureChecker.cleanup()
     postureChecker.testing()
     # postureChecker.loop()
 
