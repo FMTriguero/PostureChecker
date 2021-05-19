@@ -5,7 +5,7 @@
 # 6. Add a config file to have modify things like "bad posture before alert", camera index...
 
 from Classifier.Classifier import Classifier
-from Camera.Camera import *
+from Camera.Camera import Camera
 import os
 import time
 
@@ -27,8 +27,8 @@ class PostureChecker:
             print("Work in progress, need analyze_results")
 
     def take_image(self):
-        self.camera.take_screenshot()
-        self.camera.save_working_screenshot()
+        image = self.camera.take_screenshot()
+        self.camera.save_screenshot(image)
 
     def analyze_image(self):
         self.prediction = self.classifier.predict(image_path=os.path.join("working_image.jpg"))
@@ -39,10 +39,10 @@ class PostureChecker:
 
     def testing(self):
         self.test_image()
-        self.classifier.keypoints_finder.test_show_image()
+        self.classifier.keypoints_finder.test_show_image(black_image=True)
 
     def test_image(self):
-        self.classifier.predict(image_path=os.path.join("Testing", "good_posture.jpg"))
+        self.classifier.predict(image_path=os.path.join("Testing", "good_posture_me2.jpg"))
 
     def cleanup(self):
         """Check for when app is not closed properly"""
