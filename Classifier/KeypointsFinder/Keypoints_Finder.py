@@ -18,6 +18,13 @@ class KeypointsFinder:
         self.model.load_weights(self.model_path)
         self.params, self.model_params = config_reader()
 
+        # self.scale_search = self.params['scale_search']      #  When making a "map" this reads as empty on 2nd loop
+        self.scale_search = [0.5, 1, 1.5, 2]
+        self.thre1 = self.params['thre1']
+        self.boxsize = self.model_params['boxsize']
+        self.stride = self.model_params['stride']
+        self.padValue = self.model_params['padValue']
+
         self.working_all_peaks = None
         self.working_image = None
         self.canvas = None
@@ -25,26 +32,22 @@ class KeypointsFinder:
     def find_keypoints(self, oriImg):
         """ Start of finding the Key points of full body using Open Pose."""
         self.working_image = oriImg
-        multiplier = [x * self.model_params['boxsize'] / oriImg.shape[0] for x in self.params['scale_search']]
+        multiplier = [x * self.boxsize / oriImg.shape[0] for x in self.scale_search]
         heatmap_avg = np.zeros((oriImg.shape[0], oriImg.shape[1], 19))
         paf_avg = np.zeros((oriImg.shape[0], oriImg.shape[1], 38))
         for m in range(1):
             scale = multiplier[m]
             imageToTest = cv2.resize(oriImg, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
-            imageToTest_padded, pad = util.pad_right_down_corner(imageToTest, self.model_params['stride'],
-                                                                 self.model_params['padValue'])
+            imageToTest_padded, pad = util.pad_right_down_corner(imageToTest, self.stride, self.padValue)
             input_img = np.transpose(np.float32(imageToTest_padded[:, :, :, np.newaxis]),
                                      (3, 0, 1, 2))  # required shape (1, width, height, channels)
             output_blobs = self.model.predict(input_img)
             heatmap = np.squeeze(output_blobs[1])  # output 1 is heatmaps
-            heatmap = cv2.resize(heatmap, (0, 0), fx=self.model_params['stride'], fy=self.model_params['stride'],
-                                 interpolation=cv2.INTER_CUBIC)
-            heatmap = heatmap[:imageToTest_padded.shape[0] - pad[2], :imageToTest_padded.shape[1] - pad[3],
-                      :]
+            heatmap = cv2.resize(heatmap, (0, 0), fx=self.stride, fy=self.stride, interpolation=cv2.INTER_CUBIC)
+            heatmap = heatmap[:imageToTest_padded.shape[0] - pad[2], :imageToTest_padded.shape[1] - pad[3], :]
             heatmap = cv2.resize(heatmap, (oriImg.shape[1], oriImg.shape[0]), interpolation=cv2.INTER_CUBIC)
             paf = np.squeeze(output_blobs[0])  # output 0 is PAFs
-            paf = cv2.resize(paf, (0, 0), fx=self.model_params['stride'], fy=self.model_params['stride'],
-                             interpolation=cv2.INTER_CUBIC)
+            paf = cv2.resize(paf, (0, 0), fx=self.stride, fy=self.stride, interpolation=cv2.INTER_CUBIC)
             paf = paf[:imageToTest_padded.shape[0] - pad[2], :imageToTest_padded.shape[1] - pad[3], :]
             paf = cv2.resize(paf, (oriImg.shape[1], oriImg.shape[0]), interpolation=cv2.INTER_CUBIC)
             heatmap_avg = heatmap_avg + heatmap / len(multiplier)
@@ -67,7 +70,7 @@ class KeypointsFinder:
             map_down[:, :-1] = map[:, 1:]
 
             peaks_binary = np.logical_and.reduce(
-                (map >= map_left, map >= map_right, map >= map_up, map >= map_down, map > self.params['thre1']))
+                (map >= map_left, map >= map_right, map >= map_up, map >= map_down, map > self.thre1))
             peaks = list(zip(np.nonzero(peaks_binary)[1], np.nonzero(peaks_binary)[0]))  # note reverse
             peaks_with_score = [x + (map_ori[x[1], x[0]],) for x in peaks]
             id = range(peak_counter, peak_counter + len(peaks))
