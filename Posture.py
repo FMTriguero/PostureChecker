@@ -28,7 +28,7 @@ class PostureChecker:
 
     def take_image(self):
         image = self.camera.take_screenshot()
-        self.camera.save_screenshot(image)
+        self.camera.save_screenshot(image=image)
 
     def analyze_image(self):
         self.prediction = self.classifier.predict(image_path=os.path.join("working_image.jpg"))

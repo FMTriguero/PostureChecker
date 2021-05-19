@@ -78,17 +78,20 @@ class KeypointsFinder:
 
         self.working_all_peaks = all_peaks
 
-    def test_show_image_prepare_nodes(self, black_image):
+    def draw_peaks_over_canvas(self, black_image=False):
+        self.set_canvas(black_image)
+        for i in range(18):
+            for j in range(len(self.working_all_peaks[i])):
+                cv2.circle(self.canvas, self.working_all_peaks[i][j][0:2], 4, self.colors[i], thickness=-1)
+                
+    def set_canvas(self, black_image):
         if black_image:
             self.canvas = np.zeros((self.working_image.shape[0], self.working_image.shape[1], 3), np.uint8)
         else:
             self.canvas = self.working_image
-        for i in range(18):
-            for j in range(len(self.working_all_peaks[i])):
-                cv2.circle(self.canvas, self.working_all_peaks[i][j][0:2], 4, self.colors[i], thickness=-1)
 
     def test_show_image(self, black_image=False):
-        self.test_show_image_prepare_nodes(black_image)
+        self.draw_peaks_over_canvas(black_image)
         # sometimes opencv will oversize the image when using using `cv2.imshow()`. This function solves that issue.
         screen_res = 1280, 720
         scale_width = screen_res[0] / self.canvas.shape[1]

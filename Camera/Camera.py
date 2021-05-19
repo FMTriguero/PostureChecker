@@ -13,11 +13,15 @@ class Camera:
             print("Can't receive frame (stream end?). Exiting ...")
         return Image
 
-    def save_screenshot(self, image, path=""):
-        if len(path) != 0:
-            cv2.imwrite(path, image)
-        else:
-            cv2.imwrite(self.working_path, image)
+    def save_screenshot(self, image=None, image_path=None, path=None):
+        if image is None and image_path is None:
+            AssertionError("Need either an image input or an image path")
+        if path is None:
+            path = self.working_path
+        if image is None:
+            image = cv2.imread(image_path)
+
+        cv2.imwrite(path, image)
         print(path)
 
     def delete_working_screenshot(self):
