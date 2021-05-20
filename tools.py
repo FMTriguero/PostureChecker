@@ -51,9 +51,8 @@ class Tools:
             for file in files[i]:
                 print(os.path.join(self.base_path, directory, file))
                 self.classifier.predict(os.path.join(self.base_path, directory, file))
-                self.classifier.keypoints_finder.draw_peaks_over_canvas(black_image=True)
-                self.camera.save_screenshot(image=self.classifier.keypoints_finder.canvas,
-                                            path=os.path.join(self.base_path, new_directory, file))
+                canvas = self.classifier.keypoints_finder.draw_peaks_over_canvas(black_image=True)
+                self.camera.save_screenshot(image=canvas, path=os.path.join(self.base_path, new_directory, file))
             i = i + 1
 
 

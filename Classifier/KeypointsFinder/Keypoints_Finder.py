@@ -86,6 +86,7 @@ class KeypointsFinder:
         for i in range(18):
             for j in range(len(self.working_all_peaks[i])):
                 cv2.circle(self.canvas, self.working_all_peaks[i][j][0:2], 4, self.colors[i], thickness=-1)
+        return self.canvas
                 
     def set_canvas(self, black_image):
         if black_image:
@@ -94,16 +95,16 @@ class KeypointsFinder:
             self.canvas = self.working_image
 
     def test_show_image(self, black_image=False):
-        self.draw_peaks_over_canvas(black_image)
+        canvas = self.draw_peaks_over_canvas(black_image)
         # sometimes opencv will oversize the image when using using `cv2.imshow()`. This function solves that issue.
         screen_res = 1280, 720
-        scale_width = screen_res[0] / self.canvas.shape[1]
-        scale_height = screen_res[1] / self.canvas.shape[0]
+        scale_width = screen_res[0] / canvas.shape[1]
+        scale_height = screen_res[1] / canvas.shape[0]
         scale = min(scale_width, scale_height)
-        window_width = int(self.canvas.shape[1] * scale)
-        window_height = int(self.canvas.shape[0] * scale)
+        window_width = int(canvas.shape[1] * scale)
+        window_height = int(canvas.shape[0] * scale)
         cv2.namedWindow('image', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('image', window_width, window_height)
-        cv2.imshow('image', self.canvas)
+        cv2.imshow('image', canvas)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
