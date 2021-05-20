@@ -13,8 +13,8 @@ def get_all_directories(base_path="Saving_screenshots"):
 def get_all_files_in_directory(directories, base_path="Saving_screenshots"):
     files = []
     for directory in directories:
-        files = files + [f for f in os.listdir(os.path.join(base_path, directory)) if
-                         os.path.isfile(os.path.join(base_path, directory, f))]
+        files.append([f for f in os.listdir(os.path.join(base_path, directory)) if
+                      os.path.isfile(os.path.join(base_path, directory, f))])
     return files
 
 
@@ -44,14 +44,17 @@ class Tools:
         self.key_point_extraction_data(directories, files)
 
     def key_point_extraction_data(self, directories, files):
+        i = 0
         for directory in directories:
             new_directory = directory + "_key_points"
             os.mkdir(os.path.join(self.base_path, new_directory))
-            for file in files:
+            for file in files[i]:
+                print(os.path.join(self.base_path, directory, file))
                 self.classifier.predict(os.path.join(self.base_path, directory, file))
                 self.classifier.keypoints_finder.draw_peaks_over_canvas(black_image=True)
                 self.camera.save_screenshot(image=self.classifier.keypoints_finder.canvas,
                                             path=os.path.join(self.base_path, new_directory, file))
+            i = i + 1
 
 
 def running_tools():

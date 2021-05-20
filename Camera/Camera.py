@@ -22,7 +22,6 @@ class Camera:
             image = cv2.imread(image_path)
 
         cv2.imwrite(path, image)
-        print(path)
 
     def delete_working_screenshot(self):
         if os.path.exists(os.path.join(self.working_path)):
