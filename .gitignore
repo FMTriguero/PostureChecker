@@ -1,4 +1,7 @@
 testing/
 saving_screenshots/
 /Classifier/KeypointsFinder/model.h5
+/Classifier/PostureClassifier/keras_model.h5
+/Classifier/PostureClassifier/labels.txt
 /.idea
+working_image.jpg

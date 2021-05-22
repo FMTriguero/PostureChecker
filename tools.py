@@ -36,7 +36,7 @@ class Tools:
             image = self.camera.take_screenshot()
             self.camera.save_screenshot(image,
                                         path=(os.path.join(folder_path, posture + "_" + str(i) + ".jpg")))
-            print("Taken " + str(i) + " images")
+            print("Taken " + str(i + 1) + " images")
 
     def transform_screenshots_to_key_point_data(self):
         directories = get_all_directories()
@@ -62,8 +62,8 @@ def running_tools():
 
     tools = Tools(classifier=classifier, camera=camera)
 
-    # tools.take_screenshots_for_posture_data("Bad_Posture_SquishNeck", 10, 3)
-    tools.transform_screenshots_to_key_point_data()
+    # tools.take_screenshots_for_posture_data("testing", 10, 3)
+    # tools.transform_screenshots_to_key_point_data()
 
 
 running_tools()
