@@ -1,9 +1,9 @@
 # TODO:
 # 4. Make custom start and stop for program.
-# 5. Build trigger to take 100 photos over a period of 10 minutes calculate % good posture
 # !!!Modifying 5. to "Build trigger that sends alert (shutdown for now) when x bad posture has been recorded
 # 6. Add a config file to have modify things like "bad posture before alert", camera index...
 
+from UI.UI import UI_run_app
 from Classifier.Classifier import Classifier
 from Camera.Camera import Camera
 from Alarm.Alarm import Alarm
@@ -22,6 +22,7 @@ class PostureChecker:
             time.sleep(5)
             image = self.camera.take_screenshot()
             result, prediction = self.classifier.predict(image=image)
+            print(result)
             if result == "Bad":
                 self.alarm.ring()
 
@@ -31,6 +32,8 @@ class PostureChecker:
 
 
 def main():
+    UI_run_app()
+
     classifier = Classifier()
     camera = Camera()
     alarm = Alarm()

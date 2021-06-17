@@ -12,6 +12,8 @@ pillow = "*"
 opencv-python = "*"
 configobj = "*"
 scipy = "*"
+PySide2 = "*"
+PyQt5 = "*"
 
 
 [requires]
